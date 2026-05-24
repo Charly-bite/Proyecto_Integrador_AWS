@@ -10,7 +10,7 @@ Para tomar las capturas, debes ingresar a la Consola de Administración de AWS u
 - **URL de acceso:** `https://594161137071.signin.aws.amazon.com/console`
 - **Account ID:** `594161137071`
 - **Usuario IAM:** `ProyectoAuditor` *(Nota: Si aún no se ha generado una contraseña para este usuario, pide al administrador la contraseña temporal o utiliza la cuenta principal del proyecto).*
-- **Contraseña:** `[Ingresar Contraseña Aquí]`
+- **Contraseña:** `Proyecto123!Auditor`
 - **Región:** Asegúrate de estar en la región **N. Virginia (`us-east-1`)** en la esquina superior derecha.
 
 ---
