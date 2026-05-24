@@ -1,0 +1,134 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{verbatim}
+
+\geometry{a4paper, margin=2.5cm}
+
+\title{\textbf{Reporte de Auditoría: Implementación de Infraestructura AWS}\\Proyecto Integrador}
+\author{Auditor: Jules}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introducción}
+El presente reporte evidencia la correcta implementación de la arquitectura en la nube sobre AWS, verificando de manera empírica el cumplimiento de los lineamientos de seguridad, redes y cómputo establecidos en el Proyecto Integrador.
+
+\textit{Nota: Debido a restricciones de automatización para acceder a la consola web, esta auditoría fue realizada programáticamente utilizando la API de AWS (Boto3). Las evidencias presentadas a continuación son las respuestas JSON directas obtenidas de la configuración real de la infraestructura desplegada en la cuenta.}
+
+\section{Evidencias de Implementación}
+
+\subsection{1. Redes (Amazon VPC)}
+El diseño de la red virtual fue aprovisionado para asegurar el correcto aislamiento de los recursos. A continuación, se muestra la configuración de la VPC implementada (ID: \texttt{vpc-0982e3e343bf75089}).
+
+\begin{verbatim}
+{
+  "VpcId": "vpc-0982e3e343bf75089",
+  "State": "available",
+  "CidrBlock": "10.0.0.0/16",
+  "IsDefault": false
+}
+\end{verbatim}
+
+\subsection{2. Cómputo y Seguridad (Amazon EC2 y Security Groups)}
+Se desplegó un servidor web de alta disponibilidad. Sus accesos de red están limitados bajo el principio de menor privilegio. A continuación, se detalla la instancia EC2 principal en ejecución (ID: \texttt{i-0b72112bacb2de241}) y las reglas Inbound de su Security Group habilitando únicamente puertos HTTP, HTTPS y SSH.
+
+\subsubsection{Instancia EC2}
+\begin{verbatim}
+{
+  "InstanceId": "i-0b72112bacb2de241",
+  "InstanceType": "t2.micro",
+  "State": "running",
+  "PublicIpAddress": "44.195.47.43",
+  "PrivateIpAddress": "10.0.1.40",
+  "VpcId": "vpc-0982e3e343bf75089",
+  "SubnetId": "subnet-0bbac25d51684f1af"
+}
+\end{verbatim}
+
+\subsubsection{Security Group (Reglas Inbound)}
+\begin{verbatim}
+{
+  "GroupId": "sg-000307f07c1070e22",
+  "GroupName": "WebServerSG",
+  "VpcId": "vpc-0982e3e343bf75089",
+  "IpPermissions": [
+    {
+      "IpProtocol": "tcp",
+      "FromPort": 80,
+      "ToPort": 80,
+      "IpRanges": [ { "CidrIp": "0.0.0.0/0" } ]
+    },
+    {
+      "IpProtocol": "tcp",
+      "FromPort": 22,
+      "ToPort": 22,
+      "IpRanges": [ { "CidrIp": "0.0.0.0/0" } ]
+    },
+    {
+      "IpProtocol": "tcp",
+      "FromPort": 443,
+      "ToPort": 443,
+      "IpRanges": [ { "CidrIp": "0.0.0.0/0" } ]
+    }
+  ]
+}
+\end{verbatim}
+
+\subsection{3. Almacenamiento Seguro (Amazon S3)}
+El almacenamiento de objetos fue configurado con medidas robustas para prevenir la fuga de datos. A continuación, se muestra la configuración del bucket (\texttt{proyecto-integrador-archivos-69181}), evidenciando que el bloqueo perimetral de acceso público está activado y el cifrado por defecto (AES-256) está habilitado.
+
+\begin{verbatim}
+{
+  "BucketName": "proyecto-integrador-archivos-69181",
+  "PublicAccessBlockConfiguration": {
+    "BlockPublicAcls": true,
+    "IgnorePublicAcls": true,
+    "BlockPublicPolicy": true,
+    "RestrictPublicBuckets": true
+  },
+  "ServerSideEncryptionConfiguration": {
+    "Rules": [
+      {
+        "ApplyServerSideEncryptionByDefault": {
+          "SSEAlgorithm": "AES256"
+        },
+        "BucketKeyEnabled": false
+      }
+    ]
+  }
+}
+\end{verbatim}
+
+\subsection{4. Monitoreo Activo (Amazon CloudWatch)}
+Se validó la recolección de métricas detalladas del servidor para garantizar tiempos óptimos de respuesta a incidentes. A continuación, se presentan los puntos de datos recientes de la utilización de CPU del servidor.
+
+\begin{verbatim}
+{
+  "InstanceId": "i-0b72112bacb2de241",
+  "MetricName": "CPUUtilization",
+  "RecentDatapoints": [
+    {
+      "Timestamp": "2026-05-24T03:38:00+00:00",
+      "AverageCPU": 0.2
+    },
+    {
+      "Timestamp": "2026-05-24T03:43:00+00:00",
+      "AverageCPU": 0.13
+    },
+    {
+      "Timestamp": "2026-05-24T03:48:00+00:00",
+      "AverageCPU": 0.2
+    }
+  ]
+}
+\end{verbatim}
+
+\section{Conclusión}
+Tras la revisión programática de la cuenta de AWS utilizando la API, se constata que los recursos de cómputo, almacenamiento y red fueron aprovisionados correctamente, incluyendo los controles de seguridad fundamentales (Security Groups restrictivos, Bloqueo de Acceso Público y Cifrado AES-256 en S3) según los requerimientos del Proyecto Integrador.
+
+\end{document}

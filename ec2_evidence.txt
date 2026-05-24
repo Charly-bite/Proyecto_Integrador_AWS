@@ -1,0 +1,9 @@
+{
+  "InstanceId": "i-0b72112bacb2de241",
+  "InstanceType": "t2.micro",
+  "State": "running",
+  "PublicIpAddress": "44.195.47.43",
+  "PrivateIpAddress": "10.0.1.40",
+  "VpcId": "vpc-0982e3e343bf75089",
+  "SubnetId": "subnet-0bbac25d51684f1af"
+}

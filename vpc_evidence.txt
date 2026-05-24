@@ -1,0 +1,6 @@
+{
+  "VpcId": "vpc-0982e3e343bf75089",
+  "State": "available",
+  "CidrBlock": "10.0.0.0/16",
+  "IsDefault": false
+}
