@@ -1,0 +1,16 @@
+[
+  {
+    "SubnetId": "subnet-0991c81c5db21be5f",
+    "VpcId": "vpc-0982e3e343bf75089",
+    "CidrBlock": "10.0.2.0/24",
+    "State": "available",
+    "AvailabilityZone": "us-east-1b"
+  },
+  {
+    "SubnetId": "subnet-0bbac25d51684f1af",
+    "VpcId": "vpc-0982e3e343bf75089",
+    "CidrBlock": "10.0.1.0/24",
+    "State": "available",
+    "AvailabilityZone": "us-east-1a"
+  }
+]
